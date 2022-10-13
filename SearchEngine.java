@@ -12,12 +12,12 @@ class Handler1 implements URLHandler {
         if (url.getPath().equals("/")) {
             return str;
         } 
-        else if (url.getPath().equals("/add")) {
+        else if (url.getPath().contains("/add")) {
             String[] parameters = url.getQuery().split("=");
             
             if (parameters[0].equals("s")) {
                 strList.add(parameters[1]);
-                return String.format("Successfully added: " + parameters[1]);
+                return "Successfully added: " + parameters[1];
             }
         }
         else if (url.getPath().equals("/search")){
@@ -37,5 +37,18 @@ class Handler1 implements URLHandler {
             }
         }
         return "404 Not Found!";
+    }
+}
+
+class SearchEngine {
+    public static void main(String[] args) throws IOException {
+        if(args.length == 0){
+            System.out.println("Missing port number! Try any number between 1024 to 49151");
+            return;
+        }
+
+        int port = Integer.parseInt(args[0]);
+
+        Server.start(port, new Handler1());
     }
 }
